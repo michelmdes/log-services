@@ -12,7 +12,7 @@ Link: [ApplicationPath]/swagger-ui.html
 No arquivo ResourceExceptionHandler.java ( com.michel.log.resources.exceptions ) é configurado cada tipo de exceção, um retorno http e uma mensagem padrão 
 
 ### Criando banco de dados
-´´´
+
 CREATE DATABASE log;
 CREATE SCHEMA log_manager;
 
@@ -35,7 +35,7 @@ CREATE TABLE log_manager.log_data (
 	CONSTRAINT log_data_pk PRIMARY KEY (id),
 	CONSTRAINT log_data_fk FOREIGN KEY (fk_log) REFERENCES log_manager.log(id)
 );
-´´´
+
 
 Michel Mendes
 michelmdes@gmail.com
