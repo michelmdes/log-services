@@ -6,6 +6,7 @@ import java.io.InputStream;
 import java.io.InputStreamReader;
 import java.text.ParseException;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 import java.util.Optional;
 import java.util.StringTokenizer;
@@ -53,12 +54,15 @@ public class LogDataService {
 		return logDataList;
 	}
 	
-	public Page<LogData> findByLogPage(Log log, Integer page, Integer size, String orderBy, String direction) {
-		PageRequest pageRequest = PageRequest.of(page, size, Direction.valueOf(direction), orderBy);
-		return repository.findByLog(log, pageRequest);
+	public Page<LogData> findByLogPage(Long idLog, Integer page, Integer size, String orderBy, String direction) {
+		//PageRequest pageRequest = PageRequest.of(page, size, Direction.valueOf(direction), orderBy);
+		PageRequest pageRequest = Util.getPagination(page, size, orderBy, direction);
+		return repository.findByIdLog(idLog, pageRequest);
 	}
 	
 	public LogData insert(LogData obj) {
+		if (obj.getData() != null)
+			obj.setData(new Date());
 		return repository.save(obj);
 	}
 	
@@ -95,7 +99,7 @@ public class LogDataService {
 						logDataList.add(logData);
 						
 					} catch (Exception e) {
-						logger.log(Level.WARNING, "Error line " + i + " - message: " + e.getMessage());
+						logger.log(Level.SEVERE, "Error line " + i + " - message: " + e.getMessage());
 						errorList.add("Error line " + i + ": " + line);
 					} finally {
 						i++;

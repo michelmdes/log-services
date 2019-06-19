@@ -9,7 +9,6 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
-import org.springframework.data.domain.Sort.Direction;
 import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
 
@@ -18,6 +17,7 @@ import com.michel.log.entities.LogData;
 import com.michel.log.repositories.LogRepository;
 import com.michel.log.services.exceptions.DataIntegrityException;
 import com.michel.log.services.exceptions.ObjectNotFoundException;
+import com.michel.log.utils.Util;
 
 /**
  * @author Michel Mendes	17/06/2019
@@ -39,7 +39,8 @@ public class LogService {
 	}
 	
 	public Page<Log> findPage(Integer page, Integer size, String orderBy, String direction) {
-		PageRequest pageRequest = PageRequest.of(page, size, Direction.valueOf(direction), orderBy);
+		//PageRequest pageRequest = PageRequest.of(page, size, Direction.valueOf(direction), orderBy);
+		PageRequest pageRequest = Util.getPagination(page, size, orderBy, direction);
 		return repository.findAll(pageRequest);
 	}
 
@@ -63,6 +64,7 @@ public class LogService {
 	}
 	
 	public Log upload(MultipartFile file) {
+		Long dateBegin = new Date().getTime();
 		Log log = new Log();
 		log.setFileName(file.getOriginalFilename());
 		log.setDescription("Imported file: " + file.getOriginalFilename());
@@ -70,7 +72,8 @@ public class LogService {
 		
 		List<LogData> logDataList = logDataService.upload(file, log);
 		log.setLogDataList(logDataList);
-		
+		Long intervSeg = (new Date().getTime() - dateBegin) / 1000;
+		logger.info("Arquivo de log '"+file.getOriginalFilename()+"' importado em "+intervSeg+" segundos");
 		return log;
 	}
 	

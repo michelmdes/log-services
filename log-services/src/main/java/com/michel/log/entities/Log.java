@@ -4,6 +4,7 @@ import java.io.Serializable;
 import java.util.Date;
 import java.util.List;
 
+import javax.persistence.CascadeType;
 import javax.persistence.Entity;
 import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
@@ -15,6 +16,7 @@ import javax.persistence.Temporal;
 import javax.persistence.TemporalType;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.michel.log.utils.Util;
 
 /**
  * @author Michel Mendes	17/06/2019
@@ -35,7 +37,7 @@ public class Log implements Serializable {
 	@Temporal(TemporalType.TIMESTAMP)
 	private Date data;
 	
-	@OneToMany(fetch = FetchType.LAZY, mappedBy = "log")
+	@OneToMany(fetch = FetchType.LAZY, mappedBy = "log", cascade = CascadeType.REMOVE)
 	@JsonIgnore
     private List<LogData> logDataList;
 
@@ -87,6 +89,10 @@ public class Log implements Serializable {
 
 	public void setLogDataList(List<LogData> logDataList) {
 		this.logDataList = logDataList;
+	}
+	
+	public String getDataFmt() {
+		return Util.parseDateToString(data, Util.DATE_TIME_PATTERN);
 	}
 
 	@Override

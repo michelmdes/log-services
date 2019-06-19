@@ -1,6 +1,7 @@
 package com.michel.log.entities;
 
 import java.io.Serializable;
+import java.text.ParseException;
 import java.util.Date;
 
 import javax.persistence.Entity;
@@ -15,6 +16,7 @@ import javax.persistence.Temporal;
 import javax.persistence.TemporalType;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.michel.log.utils.Util;
 
 /**
  * @author Michel Mendes	17/06/2019
@@ -99,6 +101,18 @@ public class LogData implements Serializable {
 		this.log = log;
 	}
 
+	public String getDataFmt() {
+		return Util.parseDateToString(data, Util.DATE_TIME_PATTERN);
+	}
+	
+	public void setDataFmt(String dataFmt) {
+		try {
+			this.data = Util.parseStringToDate(dataFmt, Util.DATE_PATTERN);
+		} catch (ParseException e) {
+			e.printStackTrace();
+		}
+	}
+	
 	@Override
 	public int hashCode() {
 		final int prime = 31;
