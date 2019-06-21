@@ -1,4 +1,4 @@
-#Log-Services (Backend do sistema Log-manager)
+# Log-Services (Backend do sistema Log-manager)
 
 ## Tecnologias
 Spring Boot 2.1.1
@@ -12,6 +12,7 @@ Link: [ApplicationPath]/swagger-ui.html
 No arquivo ResourceExceptionHandler.java ( com.michel.log.resources.exceptions ) é configurado cada tipo de exceção, um retorno http e uma mensagem padrão 
 
 ### Criando banco de dados
+![DER Log-manager](https://github.com/michelmdes/log-services/blob/master/log-services/DER_log_manager.png)
 
 CREATE DATABASE log;
 CREATE SCHEMA log_manager;
